@@ -25,10 +25,7 @@ async def search_rcsb(req: Request):
         },
         "return_type": "entry",
         "request_options": {
-            "pager": {
-                "start": 0,
-                "rows": max_results
-            }
+            "rows": max_results
         }
     }
 
