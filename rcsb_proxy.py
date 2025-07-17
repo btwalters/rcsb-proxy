@@ -6,7 +6,6 @@ app = FastAPI()
 
 @app.get("/test")
 def test_rcsb():
-    # Very basic search query
     search_body = {
         "query": {
             "type": "terminal",
@@ -17,7 +16,10 @@ def test_rcsb():
         },
         "return_type": "entry",
         "request_options": {
-            "rows": 5
+            "paginate": {
+                "start": 0,
+                "rows": 5
+            }
         }
     }
 
