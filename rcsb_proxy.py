@@ -14,7 +14,6 @@ async def search_rcsb(req: Request):
         if not query:
             return JSONResponse(status_code=400, content={"error": "Query term is missing."})
 
-        # Construct valid search body (minimal and RCSB-compliant)
         search_body = {
             "query": {
                 "type": "terminal",
@@ -25,8 +24,6 @@ async def search_rcsb(req: Request):
             },
             "return_type": "entry",
             "request_options": {
-                "results_content_type": ["experimental"],
-                "results_verbosity": "compact",
                 "rows": max_results
             }
         }
