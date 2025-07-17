@@ -15,4 +15,4 @@ async def proxy_rcsb_query(req: Request):
         download_links = [f"https://files.rcsb.org/download/{pid}.pdb" for pid in pdb_ids]
         return JSONResponse(content={"pdb_ids": pdb_ids, "download_links": download_links})
     except Exception as e:
-        return JSONResponse(status_code=500, content={"error": str(e)}})
+        return JSONResponse(status_code=500, content={"error": str(e)})
