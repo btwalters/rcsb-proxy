@@ -30,7 +30,7 @@ async def search_rcsb(req: Request):
 
         print(f"📤 Sending to RCSB:\n{search_body}")
 
-        r = requests.post("https://search.rcsb.org/rcsbsearch/v2/query", json=search_body)
+        r = requests.post("https://search.rcsb.org/rcsbsearch/v2/query?json=", json=search_body)
         r.raise_for_status()
 
         data = r.json()
