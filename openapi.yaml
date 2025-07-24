@@ -1,0 +1,67 @@
+openapi: 3.1.0
+info:
+  title: RCSB PDB Search Proxy
+  version: "0.1.0"
+paths:
+  /search:
+    post:
+      summary: Run an RCSB structured/full‑text search.
+      description: >
+        Forwards the request body to
+        https://search.rcsb.org/rcsbsearch/v2/query and returns the
+        raw response.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchRequest'
+      responses:
+        "200":
+          description: Successful search
+          content:
+            application/json: {}
+components:
+  schemas:
+    # ---------- HIGH‑LEVEL “group” OR “terminal” node ----------
+    SearchRequest:
+      type: object
+      properties:
+        query:
+          $ref: '#/components/schemas/QueryNode'
+        return_type:
+          type: string
+          enum: [entry, polymer_entity, assembly]   # others allowed by service
+      required: [query, return_type]
+
+    # recursive definition used by the service
+    QueryNode:
+      oneOf:
+        - $ref: '#/components/schemas/GroupNode'
+        - $ref: '#/components/schemas/TerminalNode'
+
+    GroupNode:
+      type: object
+      properties:
+        type:
+          const: group
+        logical_operator:
+          type: string
+          enum: [and, or]          # xor also allowed
+        nodes:
+          type: array
+          items:
+            $ref: '#/components/schemas/QueryNode'
+      required: [type, logical_operator, nodes]
+
+    TerminalNode:
+      type: object
+      properties:
+        type:
+          const: terminal
+        service:
+          type: string
+          enum: [full_text, text, sequence, structure]
+        parameters:
+          type: object            # free‑form per “service”
+      required: [type, service, parameters]
